@@ -6,16 +6,16 @@
 /*   By: ansebast <ansebast@student.42luanda.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:40:55 by ansebast          #+#    #+#             */
-/*   Updated: 2024/09/21 14:52:55 by ansebast         ###   ########.fr       */
+/*   Updated: 2024/09/21 19:53:14 by ansebast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUFFER_SIZE
-#define BUFFER_SIZE 42
-#endif
-#ifndef GETNEXTLINE_H
-# define GETNEXTLINE_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
 # include <fcntl.h>
 # include <stdlib.h>
 # include <unistd.h>
