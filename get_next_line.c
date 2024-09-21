@@ -6,90 +6,78 @@
 /*   By: ansebast <ansebast@student.42luanda.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:40:53 by ansebast          #+#    #+#             */
-/*   Updated: 2024/09/19 18:46:19 by ansebast         ###   ########.fr       */
+/*   Updated: 2024/09/21 15:45:04 by ansebast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdio.h>
 #include <string.h>
+#include <limits.h>
 
-// static int	ft_wdlen(char const *s, char c)
-// {
-// 	int	count;
-
-// 	count = 0;
-// 	while (*s)
-// 	{
-// 		if (*s != c && (*(s + 1) == c || *(s + 1) == '\0'))
-// 			count++;
-// 		s++;
-// 	}
-// 	return (count);
-// }
-
-// static char	*ft_get_word(char const *s, int *i, char c)
-// {
-// 	int		word_len;
-// 	char	*word;
-
-// 	word_len = 0;
-// 	while (s[*i + word_len] && s[*i + word_len] != c)
-// 		word_len++;
-// 	word = ft_substr(s, *i, word_len);
-// 	*i += word_len;
-// 	return (word);
-// }
-
-// static void	ft_freearray(char **array, int pos)
-// {
-// 	while (pos > 0)
-// 		free(array[--pos]);
-// 	free(array);
-// }
-
-// char	**ft_split(char const *s, char c)
-// {
-// 	char	**tab;
-// 	int		i;
-// 	int		j;
-
-// 	i = 0;
-// 	j = 0;
-// 	tab = (char **)malloc((ft_wdlen(s, c) + 1) * sizeof(char *));
-// 	if (!s || !tab)
-// 		return (NULL);
-// 	while (s[i])
-// 	{
-// 		if (s[i] != c)
-// 		{
-// 			tab[j] = ft_get_word(s, &i, c);
-// 			if (!tab[j++])
-// 			{
-// 				ft_freearray(tab, j);
-// 				return (NULL);
-// 			}
-// 		}
-// 		else
-// 			i++;
-// 	}
-// 	tab[j] = NULL;
-// 	return (tab);
-// }
+char	*find_newline(char *s)
+{
+	if (!s)
+		return (NULL);
+	while (*s)
+	{
+		if (*s == '\n')
+			return (s);
+		s++;
+	}
+	return (NULL);
+}
 
 char	*get_next_line(int fd)
 {
-	long	bytes_reads;
-        char    *result;
-	char	buffer[BUFFER_SIZE];
-        
-        bytes_reads = read(fd, &buffer, BUFFER_SIZE);
-        if (bytes_reads < 0)
-                return (NULL);
-        while ()
-        result = (char *)malloc(sizeof(char) * (strlen(buffer) + 1));
-        strncpy(result, buffer, BUFFER_SIZE);
-        return(result);
+	static char	*remaining = NULL;
+	char		*buffer;
+	char		*newline_pos;
+	char		*result;
+	ssize_t		bytes_read;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+
+	buffer = (char *)malloc(BUFFER_SIZE + 1);
+	if (!buffer)
+		return (NULL);
+        if (remaining)
+                result = ft_strjoin(ft_strdup(""), remaining);
+        else
+                result = ft_strjoin(ft_strdup(""), "");
+	free(remaining);
+	remaining = NULL;
+
+	while (!find_newline(result))
+	{
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		if (bytes_read < 0)
+		{
+			free(buffer);
+			free(result);
+			return (NULL);
+		}
+		buffer[bytes_read] = '\0';
+		if (bytes_read == 0)
+			break;
+		result = ft_strjoin(result, buffer);
+	}
+        newline_pos = find_newline(result);
+	if (newline_pos)
+	{
+		*newline_pos = '\0';
+		remaining = ft_strdup(newline_pos + 1);
+	}
+	free(buffer);
+	if (ft_strlen(result) == 0 && bytes_read == 0)
+	{
+		free(result);
+		return (NULL);
+	}
+        if (newline_pos)
+                result = ft_strjoin(result, "\n");
+	return (result);
 }
 
 int	main(int ac, char *av[])
@@ -104,8 +92,9 @@ int	main(int ac, char *av[])
                 close(fd);
                 exit(255);
         }
-	printf("%s\n", get_next_line(fd));
-        printf("%s\n", get_next_line(fd));
+        char *str = get_next_line(fd);
+	printf("%s", str);
+        free(str);
         close(fd);
 	return (0);
 }

@@ -2,6 +2,5 @@ ssize_t é um tipo de dado em C
 que representa um valor inteiro com sinal
 (signed), e ele é geralmente utilizado
 para indicar tamanhos ou contagens,
-
 especialmente em operações de E/S
 (entrada e saída) como a função read().
