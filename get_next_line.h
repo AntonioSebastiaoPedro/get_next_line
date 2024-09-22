@@ -6,7 +6,7 @@
 /*   By: ansebast <ansebast@student.42luanda.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:40:55 by ansebast          #+#    #+#             */
-/*   Updated: 2024/09/21 19:53:14 by ansebast         ###   ########.fr       */
+/*   Updated: 2024/09/22 19:00:55 by ansebast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
 # endif
-# include <fcntl.h>
 # include <stdlib.h>
 # include <unistd.h>
 
