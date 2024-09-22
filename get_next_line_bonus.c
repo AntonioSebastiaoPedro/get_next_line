@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ansebast <ansebast@student.42luanda.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:40:53 by ansebast          #+#    #+#             */
-/*   Updated: 2024/09/22 21:17:23 by ansebast         ###   ########.fr       */
+/*   Updated: 2024/09/22 21:19:44 by ansebast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*find_newline(char *s)
 {
@@ -27,21 +27,21 @@ static char	*find_newline(char *s)
 
 static char	*read_and_append(int fd, char **result)
 {
-	char	*buffer;
+	char	*buffer[MAX_FD];
 	ssize_t	bytes_read;
 
-	buffer = (char *)malloc(BUFFER_SIZE + 1);
-	if (!buffer)
+	buffer[fd] = (char *)malloc(BUFFER_SIZE + 1);
+	if (!buffer[fd])
 		return (NULL);
 	while (!find_newline(*result))
 	{
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		bytes_read = read(fd, buffer[fd], BUFFER_SIZE);
 		if (bytes_read <= 0)
 			break ;
-		buffer[bytes_read] = '\0';
-		*result = ft_strjoin(*result, buffer);
+		buffer[fd][bytes_read] = '\0';
+		*result = ft_strjoin(*result, buffer[fd]);
 	}
-	free(buffer);
+	free(buffer[fd]);
 	return (*result);
 }
 
@@ -60,21 +60,21 @@ static void	handle_remaining(char **result, char **remaining)
 
 char	*get_next_line(int fd)
 {
-	static char	*remaining;
+	static char	*remaining[MAX_FD];
 	char		*result;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd > 1023 || MAX_FD > 1023 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (remaining)
-		result = ft_strdup(remaining);
+	if (remaining[fd])
+		result = ft_strdup(remaining[fd]);
 	else
 		result = ft_strdup("");
-	free(remaining);
-	remaining = NULL;
+	free(remaining[fd]);
+	remaining[fd] = NULL;
 	if (!read_and_append(fd, &result))
 		return (NULL);
-	handle_remaining(&result, &remaining);
-	if (ft_strlen(result) == 0 && !remaining)
+	handle_remaining(&result, &remaining[fd]);
+	if (ft_strlen(result) == 0 && !remaining[fd])
 	{
 		free(result);
 		return (NULL);
