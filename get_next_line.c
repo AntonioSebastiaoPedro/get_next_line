@@ -6,7 +6,7 @@
 /*   By: ansebast <ansebast@student.42luanda.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:40:53 by ansebast          #+#    #+#             */
-/*   Updated: 2024/09/21 19:59:45 by ansebast         ###   ########.fr       */
+/*   Updated: 2024/09/22 18:51:13 by ansebast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,27 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}
 	return (result);
+}
+
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+int main(void)
+{
+    // Abrir três arquivos diferentes (certifique-se de que esses arquivos existam)
+    int fd1 = open("file1.txt", O_RDONLY);
+    char *line1;
+
+    for (int i = 0; i < 11; i++)
+    {
+        line1 = get_next_line(fd1);
+        if (line1) {
+            printf("fd1: %s", line1);
+            free(line1);
+        }
+    }
+    close(fd1);
+    return 0;
 }
