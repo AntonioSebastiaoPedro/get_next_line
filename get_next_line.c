@@ -6,13 +6,13 @@
 /*   By: ansebast <ansebast@student.42luanda.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:40:53 by ansebast          #+#    #+#             */
-/*   Updated: 2024/09/22 18:51:13 by ansebast         ###   ########.fr       */
+/*   Updated: 2024/09/22 21:17:23 by ansebast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*find_newline(char *s)
+static char	*find_newline(char *s)
 {
 	if (!s)
 		return (NULL);
@@ -25,7 +25,7 @@ char	*find_newline(char *s)
 	return (NULL);
 }
 
-char	*read_and_append(int fd, char **result)
+static char	*read_and_append(int fd, char **result)
 {
 	char	*buffer;
 	ssize_t	bytes_read;
@@ -45,7 +45,7 @@ char	*read_and_append(int fd, char **result)
 	return (*result);
 }
 
-void	handle_remaining(char **result, char **remaining)
+static void	handle_remaining(char **result, char **remaining)
 {
 	char	*newline_pos;
 
@@ -80,27 +80,4 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}
 	return (result);
-}
-
-#include <fcntl.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-
-int main(void)
-{
-    // Abrir três arquivos diferentes (certifique-se de que esses arquivos existam)
-    int fd1 = open("file1.txt", O_RDONLY);
-    char *line1;
-
-    for (int i = 0; i < 11; i++)
-    {
-        line1 = get_next_line(fd1);
-        if (line1) {
-            printf("fd1: %s", line1);
-            free(line1);
-        }
-    }
-    close(fd1);
-    return 0;
 }

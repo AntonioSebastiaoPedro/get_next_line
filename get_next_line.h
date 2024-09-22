@@ -6,7 +6,7 @@
 /*   By: ansebast <ansebast@student.42luanda.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:40:55 by ansebast          #+#    #+#             */
-/*   Updated: 2024/09/22 19:00:55 by ansebast         ###   ########.fr       */
+/*   Updated: 2024/09/22 20:09:34 by ansebast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 void	ft_putstr_fd(char *s, int fd);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strdup(const char *str);
+char	*get_next_line(int fd);
 size_t	ft_strlen(const char *str);
 
 #endif

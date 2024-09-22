@@ -6,13 +6,13 @@
 /*   By: ansebast <ansebast@student.42luanda.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 14:40:53 by ansebast          #+#    #+#             */
-/*   Updated: 2024/09/22 18:56:39 by ansebast         ###   ########.fr       */
+/*   Updated: 2024/09/22 21:19:44 by ansebast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-char	*find_newline(char *s)
+static char	*find_newline(char *s)
 {
 	if (!s)
 		return (NULL);
@@ -25,7 +25,7 @@ char	*find_newline(char *s)
 	return (NULL);
 }
 
-char	*read_and_append(int fd, char **result)
+static char	*read_and_append(int fd, char **result)
 {
 	char	*buffer[MAX_FD];
 	ssize_t	bytes_read;
@@ -45,7 +45,7 @@ char	*read_and_append(int fd, char **result)
 	return (*result);
 }
 
-void	handle_remaining(char **result, char **remaining)
+static void	handle_remaining(char **result, char **remaining)
 {
 	char	*newline_pos;
 
